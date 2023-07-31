@@ -48,9 +48,9 @@ app.MapPost("/products/create-new", (ECommerceDBContext db, string name, string 
 {
     try
     {
-        if (string.IsNullOrEmpty(name) || string.IsNullOrEmpty(description) || price < 1)
+        if (db.Product.Any(p => p.Name.Equals(name, StringComparison.OrdinalIgnoreCase)))
         {
-            throw new ArgumentNullException();
+            return Results.Conflict(); 
         }
 
         Product newProduct = new Product(name, description, price);
@@ -59,7 +59,7 @@ app.MapPost("/products/create-new", (ECommerceDBContext db, string name, string 
 
         db.SaveChanges();
 
-        return Results.Ok(newProduct);
+        return Results.Created($"/products/{newProduct.Id}", newProduct);
     }
     catch (Exception ex)
     {
