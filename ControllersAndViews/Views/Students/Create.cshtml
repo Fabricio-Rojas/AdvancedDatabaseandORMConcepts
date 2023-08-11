@@ -1,0 +1,12 @@
+﻿@model Student
+@{
+    ViewData["Title"] = "Create";
+}
+
+<form asp-action="Create" method="post">
+    <label asp-for="FullName"></label>
+    <input asp-for="FullName" />
+    <label asp-for="CourseId"></label>
+    <input asp-for="CourseId" />
+    <input type="submit" value="Add New Student" />
+</form>
