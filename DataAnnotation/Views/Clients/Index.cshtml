@@ -1,0 +1,33 @@
+﻿@model IEnumerable<Client>;
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Clients</h1>
+
+<a asp-action="Create">Create</a>
+
+<table>
+    <thead>
+        <tr>
+            <th>@Html.DisplayNameFor(c => c.Id)</th>
+            <th>@Html.DisplayNameFor(c => c.FirstName)</th>
+            <th>@Html.DisplayNameFor(c => c.LastName)</th>
+            <th>@Html.DisplayNameFor(c => c.PhoneNumber)</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (Client client in Model)
+        {
+            <tr>
+                <td>@Html.DisplayFor(model => client.Id)</td>
+                <td>@Html.DisplayFor(model => client.FirstName)</td>
+                <td>@Html.DisplayFor(model => client.LastName)</td>
+                <td>@Html.DisplayFor(model => client.PhoneNumber)</td>
+                <td>
+                    <a asp-action="edit" asp-route-id="@client.Id">Edit</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

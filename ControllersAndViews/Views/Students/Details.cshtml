@@ -1,0 +1,27 @@
+﻿@model Student
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Details</h1>
+
+<h4>Student</h4>
+<table>
+    <thead>
+        <tr>
+            <th>@Html.DisplayNameFor(s => s.Id)</th>
+            <th>@Html.DisplayNameFor(s => s.FullName)</th>
+            <th>@Html.DisplayNameFor(s => s.CourseId)</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>@Html.DisplayFor(s => s.Id)</td>
+            <td>@Html.DisplayFor(s => s.FullName)</td>
+            <td>@Html.DisplayFor(s => s.CourseId)</td>
+            <td>
+                <a asp-action="edit" asp-route-id="@Model.Id">Edit</a> 
+            </td>
+        </tr>
+    </tbody>
+</table>
