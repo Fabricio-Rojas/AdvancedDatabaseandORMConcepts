@@ -1,0 +1,52 @@
+﻿@model MusicStreaming.Models.Playlist
+
+@{
+    ViewData["Title"] = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>@Model.Title</h1>
+
+<div>
+    <a asp-action="Index" asp-controller="Song">View All Songs</a> |
+</div>
+
+<h2>Songs in Playlist</h2>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Title</th>
+            <th>Length (HH:MM:SS)</th>
+            <th>Album</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (Song song in Model.Songs)
+        {
+            <tr>
+                <td>@song.Title</td>
+                <td>@TimeSpan.FromSeconds(song.LengthInSeconds).ToString(@"hh\:mm\:ss")</td>
+                <td><a asp-action="Details" asp-controller="Albums" asp-route-id="@song.Album.Id">@song.Album.Title</a></td>
+                <td><a asp-action="RemoveSong" asp-controller="Playlists" asp-route-playlistId="@Model.Id" asp-route-songId="@song.Id">Remove</a></td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<h2>Total Runtime</h2>
+<p>@GetTotalRuntime(Model.Songs)</p>
+
+<div>
+    <a asp-action="Index" asp-controller="Playlist">View All Playlists</a>
+</div>
+
+@functions
+{
+    public string GetTotalRuntime(HashSet<MusicStreaming.Models.Song> songs)
+    {
+        int totalSeconds = songs.Sum(s => s.LengthInSeconds);
+        TimeSpan timeSpan = TimeSpan.FromSeconds(totalSeconds);
+        return timeSpan.ToString(@"hh\:mm\:ss");
+    }
+}

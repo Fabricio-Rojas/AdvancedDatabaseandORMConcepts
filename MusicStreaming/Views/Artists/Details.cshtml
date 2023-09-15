@@ -1,0 +1,58 @@
+﻿@model MusicStreaming.Models.Artist
+
+@{
+    ViewData["Title"] = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>Artist</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+    </dl>
+</div>
+
+<h2>Albums by @Model.Name</h2>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Title</th>
+            <th>Year</th>
+            <th>Total Running Time</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (Album album in Model.SongArtists.Select(sa => sa.Song.Album).Distinct())
+        {
+            <tr>
+                <td>@album.Title</td>
+                <td>@album.Year.ToString("yyyy")</td>
+                <td>@GetTotalRuntime(album.Songs)</td>
+                <td><a asp-action="Details" asp-controller="Albums" asp-route-id="@album.Id">View Songs</a></td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@functions
+{
+    public string GetTotalRuntime(ICollection<MusicStreaming.Models.Song> songs)
+    {
+        int totalSeconds = songs.Sum(s => s.LengthInSeconds);
+        TimeSpan timeSpan = TimeSpan.FromSeconds(totalSeconds);
+        return timeSpan.ToString(@"hh\:mm\:ss");
+    }
+}

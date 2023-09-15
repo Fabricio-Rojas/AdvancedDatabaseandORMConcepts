@@ -1,0 +1,66 @@
+﻿@model IEnumerable<MusicStreaming.Models.Song>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Index</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Id)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Title)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.LengthInSeconds)
+            </th>
+            <th>
+                Artists
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var song in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => song.Id)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => song.Title)
+                </td>
+                <td>
+                    @GetFormattedTime(song.LengthInSeconds)
+                </td>
+                <td>
+                    @foreach (SongArtists songArtist in song.SongArtists)
+                    {
+                        <a asp-action="Details" asp-controller="Artists" asp-route-id="@songArtist.Artist.Id">@songArtist.Artist.Name</a>
+                        if (!songArtist.Equals(song.SongArtists.Last()))
+                        {
+                            <span>, </span>
+                        }
+                    }
+                </td>
+                <td>
+                    <a asp-action="AddToPlaylist" asp-controller="Songs" asp-route-songId="@song.Id">Add to Playlist</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@functions
+{
+    public string GetFormattedTime(int lengthInSeconds)
+    {
+        TimeSpan timeSpan = TimeSpan.FromSeconds(lengthInSeconds);
+        return timeSpan.ToString(@"hh\:mm\:ss");
+    }
+}

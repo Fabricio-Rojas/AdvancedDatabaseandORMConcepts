@@ -1,0 +1,80 @@
+﻿@model MusicStreaming.Models.Album
+
+@{
+    ViewData["Title"] = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>Album</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Title)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Title)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Year)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Year)
+        </dd>
+    </dl>
+</div>
+
+<h2>Total Runtime</h2>
+<p>@GetTotalRuntime(Model.Songs)</p>
+
+<h4>Songs</h4>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Title</th>
+            <th>Length</th>
+            <th>Artists</th>
+            <th>Add to Playlist</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (Song song in Model.Songs)
+        {
+            <tr>
+                <td>@song.Title</td>
+                <td>@FormatTime(song.LengthInSeconds)</td>
+                <td>
+                    @foreach (SongArtists sa in song.SongArtists)
+                    {
+                        <a asp-controller="Artists" asp-action="Details" asp-route-id="@sa.ArtistId">@sa.Artist.Name</a>
+                        <br />
+                    }
+                </td>
+                <td>
+                    <a asp-controller="Songs" asp-action="AddToPlaylist" asp-route-songId="@song.Id">Add to Playlist</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@functions {
+    public string FormatTime(int seconds)
+    {
+        var timeSpan = TimeSpan.FromSeconds(seconds);
+        return $"{timeSpan.Hours:D2}:{timeSpan.Minutes:D2}:{timeSpan.Seconds:D2}";
+    }
+
+    public string GetTotalRuntime(HashSet<MusicStreaming.Models.Song> songs)
+    {
+        int totalSeconds = songs.Sum(s => s.LengthInSeconds);
+        TimeSpan timeSpan = TimeSpan.FromSeconds(totalSeconds);
+        return timeSpan.ToString(@"hh\:mm\:ss");
+    }
+}
