@@ -1,0 +1,17 @@
+﻿@model Room
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Edit</h1>
+
+<h4>Room</h4>
+
+<form asp-action="edit" method="post">
+    <input asp-for="RoomNumber" type="hidden" />
+    <label asp-for="Capacity"></label>
+    <input asp-for="Capacity" />
+    <label asp-for="Section"></label>
+    <input asp-for="Section" />
+    <input type="submit" value="Save Edit" />
+</form>

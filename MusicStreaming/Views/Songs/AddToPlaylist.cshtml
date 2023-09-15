@@ -1,0 +1,25 @@
+﻿@model MusicStreaming.Models.Song
+
+@{
+    ViewData["Title"] = "Add to Playlist";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Add to Playlist</h1>
+
+<p>
+    Song: @Model.Title
+</p>
+
+@using (Html.BeginForm())
+{
+    <div class="form-group">
+        @Html.Label("Select Playlist")
+        @Html.DropDownList("PlaylistId", null, htmlAttributes: new { @class = "form-control" })
+    </div>
+    <button type="submit" class="btn btn-primary">Add to Playlist</button>
+}
+
+<p>
+    <a asp-action="Index">See all Songs</a>
+</p>

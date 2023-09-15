@@ -1,0 +1,45 @@
+﻿@model IEnumerable<MusicStreaming.Models.Album>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Index</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Album Title
+            </th>
+            <th>
+                Artists
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (Album album in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => album.Title)
+                </td>
+                <td>
+                    @foreach (Song song in album.Songs)
+                    {
+                        @foreach (SongArtists sa in song.SongArtists)
+                        {
+                            <a asp-controller="Artists" asp-action="Details" asp-route-id="@sa.ArtistId">@sa.Artist.Name</a>
+                            <br />
+                        }
+                    }
+                </td>
+                <td>
+                    <a asp-action="Details" asp-route-id="@album.Id">Details</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

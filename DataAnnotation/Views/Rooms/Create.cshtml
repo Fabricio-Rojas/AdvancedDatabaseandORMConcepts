@@ -1,0 +1,12 @@
+﻿@model Room
+@{
+    ViewData["Title"] = "Create";
+}
+
+<form asp-action="Create" method="post">
+    <label asp-for="Capacity"></label>
+    <input asp-for="Capacity" />
+    <label asp-for="Section"></label>
+    <input asp-for="Section" />
+    <input type="submit" value="Add New Room" />
+</form>
